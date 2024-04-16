@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI & Calorie Calculator</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Container styles */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        /* Calculator styles */
+        .calculator {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+            max-width: 400px;
+        }
+
+        /* Form styles */
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* Button styles */
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Message box styles */
+        .message-box {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Result styles */
+        .result {
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        .answer-box {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>BMI & Calorie Calculator</h1>
+    </header>
+
+    <!-- Message box for users -->
+    <div class="message-box">
+        <p>Please complete the BMI Calculator first before moving onto the Calorie Calculator.</p>
+    </div>
+
+    <!-- Calculator container -->
+    <div class="container">
+
+        <!-- BMI Calculator -->
+        <div class="calculator">
+            <h2>BMI Calculator</h2>
+            <form id="bmiForm">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" placeholder="Enter your weight" required>
+                
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" placeholder="Enter your height" required>
+                
+                <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+            
+                <p id="bmiResult" class="result"></p>
+                <div id="bmiAnswer" class="answer-box"></div>
+            </form>
+        </div>
+
+        <!-- Calorie Calculator -->
+        <div class="calculator">
+            <h2>Calorie Calculator</h2>
+            <form id="calorieForm">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="calorieWeight" placeholder="Enter your weight" required>
+                
+                <label for="height">Height (cm):</label>
+                <input type="number" id="calorieHeight" placeholder="Enter your height" required>
+                
+                <label for="age">Age:</label>
+                <input type="number" id="age" placeholder="Enter your age" required>
+                
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            
+                <label for="activity-level">Activity Level:</label>
+                <select id="activity-level" required>
+                    <option value="sedentary">Sedentary</option>
+                    <option value="lightly-active">Lightly Active</option>
+                    <option value="moderately-active">Moderately Active</option>
+                    <option value="very-active">Very Active</option>
+                    <option value="extremely-active">Extremely Active</option>
+                </select>
+            
+                <button type="button" id="calculateCaloriesButton">Calculate</button>
+            
+                <div id="caloriesResult" class="result"></div>
+                <div id="caloriesAnswer" class="answer-box"></div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function calculateBMI() {
+            var weight = parseFloat(document.getElementById('weight').value);
+            var height = parseFloat(document.getElementById('height').value);
+            
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                alert('Please enter valid weight and height values.');
+                return;
+            }
+            
+            var bmi = weight / ((height / 100) * (height / 100));
+
+            document.getElementById('bmiResult').innerText = 'Your BMI is: ' + bmi.toFixed(2);
+            document.getElementById('bmiAnswer').innerHTML = '<strong>BMI Category:</strong> ' + getBMIAnswer(bmi);
+        }
+
+        function getBMIAnswer(bmi) {
+            if (bmi < 18.5) {
+                return 'Underweight';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                return 'Normal weight';
+            } else if (bmi >= 25 && bmi < 30) {
+                return 'Overweight';
+            } else {
+                return 'Obese';
+            }
+        }
+
+        document.getElementById('calculateCaloriesButton').addEventListener('click', function() {
+            var weight = parseFloat(document.getElementById('calorieWeight').value);
+            var height = parseFloat(document.getElementById('calorieHeight').value);
+            var age = parseFloat(document.getElementById('age').value);
+            var gender = document.getElementById('gender').value;
+            var activityLevel = document.getElementById('activity-level').value;
+
+            var bmr;
+
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+
+            var calories;
+
+            switch (activityLevel) {
+                case 'sedentary':
+                    calories = bmr * 1.2;
+                    break;
+                case 'lightly-active':
+                    calories = bmr * 1.375;
+                    break;
+                case 'moderately-active':
+                    calories = bmr * 1.55;
+                    break;
+                case 'very-active':
+                    calories = bmr * 1.725;
+                    break;
+                case 'extremely-active':
+                    calories = bmr * 1.9;
+                    break;
+                default:
+                    calories = 0;
+            }
+
+            document.getElementById('caloriesResult').innerText = 'You need ' + calories.toFixed(2) + ' calories per day';
+            document.getElementById('caloriesAnswer').innerHTML = 'This is for maintaining your current weight.';
+        });
+    </script>
+
+</body>
+</html>
